@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialiser mot de passe{% endblock %}
+
+{% block body %}
+    <p>
+        Si un compte existe avec cet email vous recevrez un mail pour réinitialiser votre mot de passe.
+        Ce lien expire {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p>Si vous ne recevez pas de mail veuillez vérfier votre boite spam ou <a href="{{ path('app_forgot_password_request') }}">réessayez</a>.</p>
+{% endblock %}
