@@ -1,0 +1,223 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recette : {{ recipe.title}} {% endblock %}
+
+{% block body %}
+        <section>
+                <a href="{{ path('recipe_list') }}" type="button" class="btn btn-custom my-3">Retour à la liste des recettes</a>
+        </section>
+    <section class="title-detail-custom mt-5">
+        <h1>{{ recipe.title }}</h1>
+        <p>{{ recipe.description}}</p>
+        <p><a href="#Comments">Voir les Avis</a></p>
+        <p>Note globale : {{ recipe.average|number_format(2, '.', ',') }} / 5</p>
+        <div class="mb-5 mt-3">
+        <span>Régimes : </span>
+            {% for diet in recipe.diets %}
+                <span class="badge bg-info"> {{ diet.name }} </span>
+            {% endfor %}
+        </div>
+        
+    </section>
+
+    <section class="title-detail-custom">
+        <ul class="nav nav-pills">
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" type="button" aria-current="page" href="#ingredient">Ingredients</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#time">Temps</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#step">Etapes</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#allergy">Allergènes</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="btn btn-custom" href="#diet">Régimes associés</a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="ingredient">Ingrédients</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            {% for ingredient in recipe.ingredients %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ ingredient.name }}
+                            <span class="badge bg-custom rounded-pill">Quantité : {{ ingredient.quantity }}</span>
+                            </li>
+                            {% else %}
+                            <p>pas d'ingredient</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="time">Temps</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            Temps de préparation :
+                            <span class="badge bg-custom rounded-pill">{{ recipe.prepareTime|date("H:i") }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            Temps de repos :
+                            <span class="badge bg-custom rounded-pill">{{ recipe.restTime|date("H:i") }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            Temps de cuisson :
+                            <span class="badge bg-custom rounded-pill">{{ recipe.cookingTime|date("H:i") }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+        <h2 class="ms-5 subtitle-detail" id="step">Etapes</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    
+                    <div>
+                        <ul class="list-group">
+                            {% for step in recipe.steps %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ step.fullname }}
+                            </li>
+                            {% else %}
+                            <p>pas d'étape</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="allergy">Allergènes</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            {% for allergy in recipe.allergies %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                            {{ allergy.name }}
+                            </li>
+                            {% else %}
+                            <p>Pas d'allergie</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5"></div>
+            <h2 class="ms-5 subtitle-detail" id="diet">Régimes Associés</h2>
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    <div>
+                        <ul class="list-group">
+                            {% for diet in recipe.diets %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center list-details">
+                                    {{ diet.name }}
+                                </li>
+                            {% else %}
+                            <p>Pas de régime particulier</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5" id="Comments"></div>
+            <h2 class="ms-5 subtitle-detail">Liste des commentaires</h2>
+            <div class="row justify-content-center">
+                <div class="col-9">
+                    <div>
+                        {% for comment in recipe.comments %}
+                        {% if comment.parent == null %}
+                        <div class="comment-custom">
+                            <p>Publié par {{ comment.name }} {{ comment.firstname }} le {{ comment.createdAt|date('d/m/y') }} à {{ comment.createdAt|date('H:i') }}</p>
+                            <p>Commentaire : {{ comment.content }}</p>
+                            <p><a href="#add-comment" data-reply data-id="{{ comment.id }}" class="btn btn-custom">Répondre</a></p>
+                            
+                            {# on affiche les réponses  #}
+                                <div class="ms-4 reply-custom">
+                                    {% for reply in comment.replies %}
+                                        <p>Réponse publiée par {{ reply.name }} {{ reply.firstname }} le {{ reply.createdAt|date('d/m/y') }} à {{ reply.createdAt|date('H:i') }}</p>
+                                        <p>Commentaire : {{ reply.content }}</p>
+                                        <hr>
+                                    {% endfor %}
+                                </div>
+                            <hr>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <h2 class="ms-5 subtitle-detail">Ajouter un commentaire</h2>
+            <div class="row justify-content-center">
+                <div class="col-9" id="add-comment">
+                    <div>
+                        {{ form_start(commentForm) }}
+                            {{ form_row(commentForm.email) }}
+                            {{ form_row(commentForm.name) }}
+                            {{ form_row(commentForm.firstname) }}
+                            {{ form_row(commentForm.content) }}
+                            {{ form_row(commentForm.rgpd) }}
+                            <section>
+                                <button type="submit" class="btn btn-custom my-3">Ajouter</button>
+                            </section>
+                        {{ form_end(commentForm) }}
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="container">
+        <div class="separator-custom mt-5" id="Rates"></div>
+            <h2 class="ms-5 subtitle-detail">Note globale : {{ recipe.average|number_format(2, '.', ',') }} / 5</h2>
+
+            <h2 class="ms-5 subtitle-detail">Attribuer une note</h2>
+            <div class="row justify-content-center">
+                <div class="col-9" id="add-rate">
+                    <div>
+                        {{ form_start(ratingForm) }}
+                            {{ form_row(ratingForm.note) }}
+                            <section>
+                                <button type="submit" class="btn btn-custom my-3">Ajouter</button>
+                            </section>
+                        {{ form_end(ratingForm) }}
+                    </div>
+                </div>
+            </div>
+    </section>
+    
+    <script src="{{ asset('assets/js/comments.js')}}"></script>
+    <script src="{{ asset('assets/js/stars.js')}}"></script>
+{% endblock %}

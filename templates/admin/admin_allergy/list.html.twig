@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Allergies{% endblock %}
+
+{% block body %}
+
+    <div class="mb-4 mt-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
+    </div>
+
+    <h1  class="text-center">Liste des allergies</h1>
+    <div class="mb-4 mt-4">
+        <a href="{{ path('admin_allergy_add') }}" type="button" class="btn btn-custom">
+            Ajouter une allergie
+        </a>
+    </div>
+            
+
+<table class="table table-bordered table-secondary border-dark align-middle table-hover">
+    <thead>
+        <tr class="text-center">
+            <th>Nom</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for allergy in allergies %}
+        <tr class="text-center">
+            <td>{{ allergy.name }}</td>
+            <td>
+            <a href="{{ path('admin_allergy_edit', {id: allergy.id}) }}" type="button" class="btn btn-success-custom">
+                Modifier
+            </a>
+            </td>
+            <td>
+            <a href="{{ path('admin_allergy_delete', {id: allergy.id}) }}" type="button" class="btn btn-danger-custom">
+                Supprimer
+            </a>
+            </td>
+        </tr>
+    {% endfor %}
+        
+    </tbody>
+</table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(allergies) }}
+    </div>
+
+{% endblock %}

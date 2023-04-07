@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - Etapes{% endblock %}
+
+{% block body %}
+
+    <div class="mb-4 mt-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
+    </div>
+
+    <h1  class="text-center">Liste des étapes</h1>
+    <div class="mb-4 mt-4">
+        <a href="{{ path('admin_step_add') }}" type="button" class="btn btn-custom">
+            Ajouter une étape
+        </a>
+    </div>
+            
+
+<table class="table table-bordered table-secondary border-dark align-middle table-hover">
+    <thead>
+        <tr class="text-center align-middle">
+            <th>Nom</th>
+            <th>Description</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for step in steps %}
+        <tr class="text-center">
+            <td>{{ step.name }}</td>
+            <td>{{ step.description }}</td>
+            <td>
+            <a href="{{ path('admin_step_edit', {id: step.id}) }}" type="button" class="btn btn-success-custom">
+                Modifier
+            </a>
+            </td>
+            <td>
+            <a href="{{ path('admin_step_delete', {id: step.id}) }}" type="button" class="btn btn-danger-custom">
+                Supprimer
+            </a>
+            </td>
+        </tr>
+    {% endfor %}
+        
+    </tbody>
+</table>
+
+    {# display navigation #}
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="navigation col-4">
+                {{ knp_pagination_render(steps) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

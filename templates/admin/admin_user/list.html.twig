@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminUserController!{% endblock %}
+
+{% block body %}
+
+    <div class="mb-4 mt-4">
+        <a type="button" class="btn btn-custom" href="{{ path('admin_home') }}"><img src="{{ asset('assets/images/arrow-left-circle.svg') }}" alt=""> Panneau d'administration</a>
+    </div>
+
+    <h1 class="text-center">Liste des patients</h1>
+    <div class="mb-4 mt-4">
+        <a href="{{ path('admin_user_addPatient') }}" type="button" class="btn btn-custom">
+            Ajouter un patient
+        </a>
+    </div>
+            
+
+<table class="table table-bordered table-secondary border-dark align-middle table-hover">
+    <thead>
+        <tr class="text-center align-middle">
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Allergies</th>
+            <th>Régimes</th>
+            <th>Rôles</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr class="text-center">
+            <td>{{ user.name }}</td>
+            <td>{{ user.firstname }}</td>
+            <td>
+            {% for allergy in user.allergies %}
+                    <p>{{ allergy.name }}</p>
+                {% else %}
+                    <p>pas d'allergie</p>
+            {% endfor %}
+            </td>
+            <td>
+            {% for diet in user.diets %}
+                    <p>{{ diet.name }}</p>
+                {% else %}
+                    <p>pas de régime</p>
+            {% endfor %}
+            </td>
+            <td>
+                {% for role in user.roles %}
+                    {% if role == "ROLE_ADMIN" %}
+                        {% set name = "Administrateur" %}
+                        {% set color = "danger" %}
+                    {% else %}
+                        {% set name = "Membre" %}
+                        {% set color = "info" %}
+                    {% endif %}
+                    <span class="badge bg-{{ color }}"> {{ name }} </span>
+                {% endfor %}
+            </td>
+            <td>
+            <a href="{{ path('admin_user_editPatient', {id: user.id}) }}" type="button" class="btn btn-success-custom">
+                Modifier
+            </a>
+            </td>
+            <td>
+            <a href="{{ path('admin_user_deletePatient', {id: user.id}) }}" type="button" class="btn btn-danger-custom">
+                Supprimer
+            </a>
+            </td>
+        </tr>
+    {% endfor %}
+        
+    </tbody>
+</table>
+
+    {# display navigation #}
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="navigation col-4">
+                {{ knp_pagination_render(users) }}
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

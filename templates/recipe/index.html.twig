@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!{% endblock %}
+
+{% block body %}
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active"  href="{{ path('recipe_list') }}">Toutes les recettes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="true" href="#">Recettes par type de régime</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for recipe in recipes %}
+            <div class="col">
+                <div class="card">
+                    {# <img src="..." class="card-img-top" alt="..."> #}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title}}</h5>
+                        <p class="card-text">{{ recipe.description}}</p>
+                        <a href="{{ path('recipe_details', {id: recipe.id}) }}" class="btn btn-custom">Voir la recette</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
